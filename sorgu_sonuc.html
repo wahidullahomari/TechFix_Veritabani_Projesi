@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-wrench text-white text-xl"></i>
+            </div>
+            <span class="text-3xl font-extrabold text-gray-900 dark:text-white">Tech<span class="text-blue-600">Fix</span></span>
+        </a>
+        <a href="{{ url_for('home') }}" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 font-bold transition"><i class="fa-solid fa-arrow-left mr-1"></i> Ana Sayfaya Dön</a>
+    </div>
+</nav>
+
+<div class="max-w-4xl mx-auto px-4 py-16">
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 p-8">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Takip No: #{{ kayit.id }}</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-lg mt-1">{{ kayit.cihaz }}</p>
+        </div>
+
+        <div class="relative flex justify-between items-center mb-16 px-2">
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 dark:bg-gray-700 -z-10"></div>
+            {% set durumlar = ['YENİ RANDEVU', 'ONAYLANDI', 'TAMİR EDİLİYOR', 'HAZIR', 'TESLİM EDİLDİ'] %}
+            
+            {# HATA ÇÖZÜMÜ: Veritabanından gelen veriyi temizleyip listede olup olmadığını kontrol ediyoruz #}
+            {% set temiz_durum = kayit.durum | string | trim | upper %}
+            {% if temiz_durum in durumlar %}
+                {% set aktif_index = durumlar.index(temiz_durum) %}
+            {% else %}
+                {% set aktif_index = 0 %} {# Eğer eşleşmezse hata vermek yerine ilk adımı aktif göster #}
+            {% endif %}
+            
+            {% for d in durumlar %}
+            <div class="flex flex-col items-center">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transition-all duration-500 {{ 'bg-blue-600 shadow-lg shadow-blue-500/40 scale-110' if loop.index0 <= aktif_index else 'bg-gray-300 dark:bg-gray-600' }}">
+                    {% if loop.index0 < aktif_index %}<i class="fa-solid fa-check"></i>{% else %}{{ loop.index }}{% endif %}
+                </div>
+                <span class="mt-3 text-xs md:text-sm font-bold text-center {{ 'text-blue-600 dark:text-blue-400' if loop.index0 <= aktif_index else 'text-gray-400 dark:text-gray-500' }}">{{ d }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 border border-gray-100 dark:border-gray-700">
+            <div>
+                <p class="text-sm text-gray-500 mb-1 uppercase tracking-wider font-semibold">Müşteri Bilgisi</p>
+                <p class="font-bold text-xl text-gray-900 dark:text-white"><i class="fa-regular fa-user mr-2 text-blue-500"></i>{{ kayit.musteri }}</p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-600 shadow-inner text-center md:text-left">
+                <p class="text-sm text-gray-500 mb-1 uppercase tracking-wider font-semibold">Güncel Servis Ücreti</p>
+                {% if kayit.ucret > 0 %}
+                    <p class="font-black text-4xl text-green-600 dark:text-green-400">{{ kayit.ucret }} ₺</p>
+                {% else %}
+                    <p class="font-bold text-xl text-yellow-600 dark:text-yellow-500"><i class="fa-solid fa-hourglass-half mr-2"></i> Fiyat Bekleniyor</p>
+                {% endif %}
+            </div>
+
+            <div class="md:col-span-2">
+                <p class="text-sm text-gray-500 mb-1 uppercase tracking-wider font-semibold">Arıza Detayı</p>
+                <p class="text-gray-900 dark:text-white font-medium bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700">{{ kayit.ariza }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

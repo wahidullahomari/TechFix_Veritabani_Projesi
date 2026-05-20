@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center h-full min-h-[80vh]">
+    <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 dark:border-gray-700 relative overflow-hidden">
+        
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-blue-50 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <i class="fa-solid fa-shield-halved text-blue-600 text-4xl"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2">Personel Girişi</h1>
+            
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium px-4">
+                Bu alan sadece <span class="text-blue-600 dark:text-blue-400 font-bold">yetkili TechFix personeli</span> içindir. Lütfen size özel tanımlanan giriş bilgilerinizi kullanın.
+            </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fa-solid fa-user text-gray-400 mr-2"></i>Kullanıcı Adı
+                </label>
+                <input type="text" name="username" required 
+                       class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition shadow-sm"
+                       placeholder="Kullanıcı adınızı girin">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    <i class="fa-solid fa-lock text-gray-400 mr-2"></i>Şifre
+                </label>
+                <input type="password" name="password" required 
+                       class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition shadow-sm"
+                       placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-500/30 text-lg flex justify-center items-center gap-2 mt-2">
+                Sisteme Giriş Yap <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+        </form>
+        
+        <div class="mt-8 text-center">
+            <a href="{{ url_for('home') }}" class="text-sm font-semibold text-gray-500 hover:text-blue-600 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Ana Sayfaya Dön
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
